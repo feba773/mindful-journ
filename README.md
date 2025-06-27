@@ -19,7 +19,7 @@ A modern web application for mental health tracking, daily reflection, and perso
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/yfeba773/mindjournal.git
+   git clone https://github.com/feba773/mindjournal.git
    ```
 
 2. **Setup Firebase**

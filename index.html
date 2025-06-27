@@ -517,16 +517,14 @@ body {
         import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, Timestamp, updateDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDWO3aKHIAEnoj9QMSg8zANPgTSYrusjf8",
-            authDomain: "journ-956f2.firebaseapp.com",
-            projectId: "journ-956f2",
-            storageBucket: "journ-956f2.firebasestorage.app",
-            messagingSenderId: "914094475722",
-            appId: "1:914094475722:web:8592bfa106d767a7556733",
-            measurementId: "G-GB9NLTZH1K"
-        };
-
+   const firebaseConfig = {
+  apiKey: "your-api-key",
+  authDomain: "your-project.firebaseapp.com",
+  projectId: "your-project-id",
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "your-sender-id",
+  appId: "your-app-id"
+};
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);

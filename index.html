@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindJournal Pro - AI-Powered Personal Digital Diary</title>
+    <style>
+/* MindJournal - Unique & Beautiful Styles */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-gradient: linear-gradient(135deg, #d6518f 0%, #ee8f36 100%);
+  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --accent-gradient: linear-gradient(135deg, #5faa2a 0%, #be268c 100%);
+  --success-gradient: linear-gradient(135deg, #81FBB8 0%, #28C76F 100%);
+  --warning-gradient: linear-gradient(135deg, #73c52c 0%, #FF6B6B 100%);
+  
+  --glass-bg: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-light: rgba(255, 255, 255, 0.9);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--primary-gradient);
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 30px;
+    margin: 20px 0;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.input {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    margin: 10px 0;
+    font-size: 16px;
+    color: var(--text-primary);
+    box-sizing: border-box;
+}
+
+.input::placeholder {
+    color: var(--text-secondary);
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--text-secondary);
+    padding: 0;
+    z-index: 10;
+}
+
+.password-toggle:hover {
+    color: var(--text-primary);
+}
+
+.password-requirements {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 5px 0;
+    opacity: 0.8;
+}
+
+.password-requirements.valid {
+    color: #28C76F;
+}
+
+.password-requirements.invalid {
+    color: #FF6B6B;
+}
+
+.btn {
+    background: var(--secondary-gradient);
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    margin: 5px;
+    transition: all 0.3s ease;
+    width: calc(50% - 10px);
+    box-sizing: border-box;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.mood-btn {
+    background: rgba(255,255,255,0.3);
+    border: 2px solid transparent;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mood-btn:hover, .mood-btn.selected {
+    border-color: #fff;
+    background: rgba(255,255,255,0.5);
+    transform: scale(1.05);
+}
+
+.hidden {
+    display: none;
+}
+
+.error {
+    color: #ff6b6b;
+    background: rgba(255,107,107,0.1);
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.success {
+    color: #28C76F;
+    background: rgba(40,199,111,0.1);
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.entry {
+    background: rgba(255,255,255,0.15);
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 15px;
+    border-left: 4px solid #f093fb;
+}
+
+.mood-content {
+    background: rgba(255,255,255,0.2);
+    padding: 20px;
+    border-radius: 15px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.mood-emoji {
+    font-size: 2em;
+    margin: 10px 0;
+}
+
+.quote {
+    font-style: italic;
+    font-size: 1.1em;
+    margin: 15px 0;
+    color: var(--text-primary);
+}
+
+.meme {
+    background: rgba(255,255,255,0.3);
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.refresh-btn {
+    background: var(--accent-gradient);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.ai-section {
+    border: 2px dashed rgba(255,255,255,0.3);
+    padding: 20px;
+    border-radius: 15px;
+    margin: 15px 0;
+    background: rgba(255,255,255,0.1);
+}
+
+.ai-response {
+    background: rgba(255,255,255,0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+    border-left: 4px solid #4facfe;
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.stat-card {
+    background: rgba(255,255,255,0.2);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2em;
+    font-weight: bold;
+    color: #f093fb;
+}
+
+.goal-item {
+    background: rgba(255,255,255,0.15);
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.goal-completed {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    background: var(--secondary-gradient);
+    color: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.login-toggle {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.login-toggle button {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.login-toggle button:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .card {
+        padding: 20px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="container">
+        <div class="card">
+            <h1>🧠 MindJournal Pro</h1>
+            <p>Your AI-Powered Personal Growth Companion</p>
+            
+            <!-- Name field (only visible during registration) -->
+            <div id="nameField" class="hidden">
+                <input type="text" id="fullName" class="input" placeholder="Full Name">
+            </div>
+            
+            <input type="email" id="email" class="input" placeholder="Email">
+            
+            <div class="password-container">
+                <input type="password" id="password" class="input" placeholder="Password">
+                <button type="button" class="password-toggle" id="passwordToggle">👁️</button>
+            </div>
+            
+            <div id="passwordRequirements" class="password-requirements">
+                Password must be at least 6 characters long
+            </div>
+            
+            <div id="loginButtons">
+                <button id="loginBtn" class="btn">Login</button>
+                <button id="registerBtn" class="btn">Register</button>
+            </div>
+            
+            <div class="login-toggle">
+                <span id="toggleText">Don't have an account?</span>
+                <button id="toggleMode">Sign up here</button>
+            </div>
+            
+            <div id="authError" class="error hidden"></div>
+            <div id="authSuccess" class="success hidden"></div>
+        </div>
+    </div>
+
+ 
+
+    <!-- Main App -->
+    <div id="appScreen" class="container hidden">
+        <!-- Header -->
+        <div class="card">
+            <h1>🧠 MindJournal Pro</h1>
+            <p id="welcomeMessage">Welcome back! Ready to reflect and grow?</p>
+            <button id="logoutBtn" class="btn">Logout</button>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="card">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="journal">📝 Journal</button>
+                <button class="tab-btn" data-tab="analytics">📊 Analytics</button>
+                <button class="tab-btn" data-tab="goals">🎯 Goals</button>
+                <button class="tab-btn" data-tab="ai-chat">🤖 AI Chat</button>
+            </div>
+        </div>
+
+        <!-- Journal Tab -->
+        <div id="journal-tab" class="tab-content active">
+            <!-- New Entry Form -->
+            <div class="card">
+                <h2>✨ New Entry</h2>
+                <input type="text" id="title" class="input" placeholder="Entry Title">
+                <textarea id="content" class="input" rows="4" placeholder="How are you feeling today? What's on your mind?"></textarea>
+                
+                <div>
+                    <p><strong>Mood:</strong></p>
+                    <button class="mood-btn" data-mood="😢" data-name="sad">😢 Sad</button>
+                    <button class="mood-btn" data-mood="😐" data-name="neutral">😐 Neutral</button>
+                    <button class="mood-btn" data-mood="🙂" data-name="happy">🙂 Happy</button>
+                    <button class="mood-btn" data-mood="😄" data-name="excited">😄 Excited</button>
+                    <button class="mood-btn" data-mood="😰" data-name="anxious">😰 Anxious</button>
+                    <button class="mood-btn" data-mood="😌" data-name="peaceful">😌 Peaceful</button>
+                </div>
+                
+                <div>
+                    <p><strong>Energy Level:</strong></p>
+                    <input type="range" id="energyLevel" min="1" max="10" value="5" class="input">
+                    <span id="energyValue">5</span>/10
+                </div>
+                
+                <!-- Mood-based content display -->
+                <div id="moodContent" class="hidden"></div>
+                
+                <!-- AI Features -->
+                <div class="ai-section">
+                    <h3>🤖 AI Assistant</h3>
+                    <button id="aiAnalyzeBtn" class="btn">Analyze My Mood</button>
+                    <button id="aiSuggestionsBtn" class="btn">Get Writing Prompts</button>
+                    <button id="aiInsightsBtn" class="btn">Get Personal Insights</button>
+                    <div id="aiResponse" class="ai-response hidden"></div>
+                </div>
+                
+                <input type="text" id="tags" class="input" placeholder="Tags (comma separated)">
+                <button id="saveBtn" class="btn">💾 Save Entry</button>
+            </div>
+
+            <!-- Entries List -->
+            <div class="card">
+                <h2>📚 Your Entries</h2>
+                <div>
+                    <input type="text" id="searchEntries" class="input" placeholder="Search entries...">
+                    <select id="filterMood" class="input">
+                        <option value="">All Moods</option>
+                        <option value="sad">😢 Sad</option>
+                        <option value="neutral">😐 Neutral</option>
+                        <option value="happy">🙂 Happy</option>
+                        <option value="excited">😄 Excited</option>
+                        <option value="anxious">😰 Anxious</option>
+                        <option value="peaceful">😌 Peaceful</option>
+                    </select>
+                </div>
+                <div id="entriesList"></div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics-tab" class="tab-content">
+            <div class="card">
+                <h2>📊 Your Journey Analytics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalEntries">0</div>
+                        <div>Total Entries</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="currentStreak">0</div>
+                        <div>Day Streak</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="avgMood">0</div>
+                        <div>Avg Mood Score</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="avgEnergy">0</div>
+                        <div>Avg Energy</div>
+                    </div>
+                </div>
+                
+                <div id="moodChart" class="ai-section">
+                    <h3>📈 Mood Trends</h3>
+                    <div id="moodTrendData"></div>
+                </div>
+                
+                <button id="generateReport" class="btn">🤖 Generate AI Report</button>
+                <div id="aiReport" class="ai-response hidden"></div>
+            </div>
+        </div>
+
+        <!-- Goals Tab -->
+        <div id="goals-tab" class="tab-content">
+            <div class="card">
+                <h2>🎯 Personal Goals</h2>
+                <div class="ai-section">
+                    <h3>Add New Goal</h3>
+                    <input type="text" id="newGoal" class="input" placeholder="Enter your goal...">
+                    <button id="addGoalBtn" class="btn">Add Goal</button>
+                    <button id="aiGoalSuggestBtn" class="btn">🤖 Suggest Goals</button>
+                </div>
+                <div id="goalsList"></div>
+            </div>
+        </div>
+
+        <!-- AI Chat Tab -->
+        <div id="ai-chat-tab" class="tab-content">
+            <div class="card">
+                <h2>🤖 AI Companion Chat</h2>
+                <div id="chatMessages" class="ai-section" style="height: 400px; overflow-y: auto;"></div>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="chatInput" class="input" placeholder="Ask me anything about your mental health, goals, or life...">
+                    <button id="sendChatBtn" class="btn">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, Timestamp, updateDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDWO3aKHIAEnoj9QMSg8zANPgTSYrusjf8",
+            authDomain: "journ-956f2.firebaseapp.com",
+            projectId: "journ-956f2",
+            storageBucket: "journ-956f2.firebasestorage.app",
+            messagingSenderId: "914094475722",
+            appId: "1:914094475722:web:8592bfa106d767a7556733",
+            measurementId: "G-GB9NLTZH1K"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Enhanced mood-based content data
+        const moodContent = {
+            sad: {
+                quotes: [
+                    "It's okay to not be okay. Tomorrow is a new day.",
+                    "Every storm runs out of rain. This too shall pass.",
+                    "You are stronger than you think and braver than you feel.",
+                    "Healing isn't linear, and that's perfectly okay.",
+                    "Even the darkest night will end and the sun will rise.",
+                    "Your current chapter is not your final story.",
+                    "Be gentle with yourself. You're doing the best you can."
+                ],
+                memes: [
+                    "When life gives you lemons... *cries in citrus*",
+                    "Me: I'm fine. Also me: *listening to sad songs at 2am*",
+                    "Mood: Professional overthinker with a PhD in worst-case scenarios",
+                    "Today's forecast: 99% chance of staying in bed",
+                    "Me trying to adult today: *dial-up internet sounds*"
+                ],
+                activities: [
+                    "Take a warm bath with essential oils",
+                    "Call a friend or family member",
+                    "Watch your favorite comfort movie",
+                    "Write down three things you're grateful for",
+                    "Go for a gentle walk in nature"
+                ]
+            },
+            neutral: {
+                quotes: [
+                    "Sometimes the most productive thing you can do is relax.",
+                    "Peace comes from within. Do not seek it without.",
+                    "Balance is not something you find, it's something you create.",
+                    "In the middle of difficulty lies opportunity.",
+                    "Calm mind brings inner strength and self-confidence.",
+                    "Stillness is where creativity and solutions are found.",
+                    "Today is a blank canvas. Paint it however you choose."
+                ],
+                memes: [
+                    "Mood: Existing. Status: Present but not participating.",
+                    "Me today: Neutral NPC energy, no side quests please.",
+                    "Current vibe: Screensaver mode activated",
+                    "Today I'm Switzerland - completely neutral about everything",
+                    "Energy level: Meh with a side of whatever"
+                ],
+                activities: [
+                    "Practice 10 minutes of meditation",
+                    "Organize your living space",
+                    "Read a few pages of a book",
+                    "Try a new recipe",
+                    "Learn something new online"
+                ]
+            },
+            happy: {
+                quotes: [
+                    "Happiness is not by chance, but by choice.",
+                    "The secret of happiness is to count your blessings, not your troubles.",
+                    "Every day may not be good, but there's something good in every day.",
+                    "Happiness blooms from within.",
+                    "Choose joy, spread kindness, be grateful.",
+                    "Your smile is your logo, your personality is your business card.",
+                    "Happiness is the best makeup. A smile is the best outfit."
+                ],
+                memes: [
+                    "Mood: Golden retriever energy at a dog park",
+                    "Me: *exists happily* The universe: Wait, that's illegal",
+                    "Current status: Suspiciously happy for no reason",
+                    "Today's vibe: Main character energy activated",
+                    "Me spreading good vibes like confetti at a party"
+                ],
+                activities: [
+                    "Share your joy with someone special",
+                    "Dance to your favorite music",
+                    "Try a new hobby or skill",
+                    "Volunteer for a cause you care about",
+                    "Plan something fun for the weekend"
+                ]
+            },
+            excited: {
+                quotes: [
+                    "Life is either a daring adventure or nothing at all!",
+                    "The best time to plant a tree was 20 years ago. The second best time is now!",
+                    "Dream big, work hard, stay focused, and surround yourself with good people.",
+                    "Your potential is endless. Go do what you were created to do!",
+                    "The world is full of magical things patiently waiting for our wits to grow sharper.",
+                    "Adventure awaits those who dare to seek it.",
+                    "Today is the day to turn your dreams into plans."
+                ],
+                memes: [
+                    "Energy level: Caffeinated squirrel on Red Bull",
+                    "Me when good things happen: *happy dancing intensifies*",
+                    "Current mood: 5-year-old on Christmas morning",
+                    "Excitement level: Golden retriever seeing their human after 5 minutes",
+                    "Today's vibe: Main character having the best plot twist ever"
+                ],
+                activities: [
+                    "Start that project you've been putting off",
+                    "Reach out to someone you admire",
+                    "Plan your next adventure",
+                    "Create something artistic",
+                    "Share your excitement on social media"
+                ]
+            },
+            anxious: {
+                quotes: [
+                    "Anxiety is the dizziness of freedom, but you have the power to find your balance.",
+                    "You are braver than you believe, stronger than you seem, and smarter than you think.",
+                    "This feeling is temporary. You are permanent.",
+                    "Breathe in peace, breathe out worry.",
+                    "Your anxiety is lying to you. You are safe, you are loved, you are enough.",
+                    "Progress, not perfection, is the goal.",
+                    "One step at a time, one breath at a time, one moment at a time."
+                ],
+                memes: [
+                    "Anxiety: What if something goes wrong? Me: What if something goes right?",
+                    "My anxiety preparing 47 worst-case scenarios for buying groceries",
+                    "Anxiety level: Checking if I locked the door 12 times",
+                    "Me: *exists peacefully* Anxiety: Allow me to introduce myself",
+                    "Anxiety: But what if... Me: No, we're not doing this today"
+                ],
+                activities: [
+                    "Practice deep breathing exercises",
+                    "Do a guided meditation",
+                    "Write down your worries and challenge them",
+                    "Take a warm shower or bath",
+                    "Listen to calming music or nature sounds"
+                ]
+            },
+            peaceful: {
+                quotes: [
+                    "Peace is not the absence of conflict, but the ability to cope with it.",
+                    "In the midst of winter, I found there was, within me, an invincible summer.",
+                    "The quieter you become, the more you can hear.",
+                    "Peace begins with a smile.",
+                    "Inner peace is the new success.",
+                    "Be still and know that you are exactly where you need to be.",
+                    "Serenity is not freedom from the storm, but peace amid the storm."
+                ],
+                memes: [
+                    "Current status: Zen master who just figured out inner peace",
+                    "Me finding inner peace: *downloading complete*",
+                    "Peaceful vibes only - anxiety has left the chat",
+                    "Today's mood: Floating on cloud nine with no WiFi password needed",
+                    "Me being at peace: *final boss of calmness unlocked*"
+                ],
+                activities: [
+                    "Spend time in nature",
+                    "Practice yoga or gentle stretching",
+                    "Write in a gratitude journal",
+                    "Have a mindful cup of tea",
+                    "Watch the sunrise or sunset"
+                ]
+            }
+        };
+
+        // AI Response templates
+        const aiResponses = {
+            moodAnalysis: {
+                sad: "I notice you're feeling sad today. This is completely normal and valid. Consider reaching out to someone you trust, practicing self-care, or engaging in activities that bring you comfort. Remember, this feeling is temporary.",
+                neutral: "You seem to be in a balanced state today. This is a great time for reflection, planning, or trying something new. Neutral days can be very productive for personal growth.",
+                happy: "Your positive energy is wonderful! This is a perfect time to share your joy with others, work on exciting projects, or create lasting memories. Keep nurturing what makes you happy.",
+                excited: "Your excitement is contagious! Channel this energy into pursuing your goals, starting new adventures, or inspiring others around you. This enthusiasm is a powerful force for positive change.",
+                anxious: "I can sense your anxiety, and I want you to know that these feelings are manageable. Try some breathing exercises, ground yourself in the present moment, and remember that you've overcome challenges before.",
+                peaceful: "Your sense of peace is beautiful. This is an ideal state for deep reflection, meditation, or simply enjoying the present moment. Use this tranquility to recharge and appreciate life's simple pleasures."
+            },
+            writingPrompts: [
+                "What are three things that made you smile today, no matter how small?",
+                "If you could give advice to your younger self, what would it be?",
+                "Describe a moment today when you felt completely present.",
+                "What's one habit you'd like to develop and why?",
+                "Write about a person who has positively influenced your life.",
+                "What does your ideal day look like from start to finish?",
+                "What challenge are you currently facing, and what's one small step you could take?",
+                "If you could master any skill instantly, what would it be and how would you use it?",
+                "What's something you're grateful for that you often take for granted?",
+                "Describe a place where you feel most at peace and why.",
+                "What's a limiting belief you'd like to let go of?",
+                "Write about a time when you surprised yourself with your strength.",
+                "What would you do if you knew you couldn't fail?",
+                "How have you grown in the past year?",
+                "What's something you're looking forward to in the next month?"
+            ],
+            insights: [
+                "Your mood patterns suggest you're most creative in the evenings. Consider scheduling important tasks or creative work during this time.",
+                "I notice you tend to feel more positive after physical activities. Regular exercise could be a great mood booster for you.",
+                "Your entries show you're very self-aware. This emotional intelligence is a strength that will serve you well in relationships and personal growth.",
+                "You often mention feeling grateful - this positive mindset is linked to better mental health and life satisfaction.",
+                "Your reflective nature helps you learn from experiences. Keep journaling as it's clearly beneficial for your personal development.",
+                "I see you're working through challenges with resilience. Remember to celebrate your progress, even small wins matter.",
+                "Your entries suggest you value connection with others. Nurturing relationships seems to be important for your well-being.",
+                "You have a growth mindset, always looking to improve. This attitude will help you overcome obstacles and achieve your goals."
+            ],
+            goalSuggestions: [
+                "Practice mindfulness for 10 minutes daily",
+                "Read one book per month",
+                "Exercise 3 times per week",
+                "Learn a new skill or hobby",
+                "Connect with a friend or family member weekly",
+                "Write in your journal every day",
+                "Practice gratitude daily",
+                "Reduce screen time before bed",
+                "Try a new healthy recipe each week",
+                "Take a walk in nature regularly",
+                "Meditate for 15 minutes daily",
+                "Declutter and organize your living space",
+                "Learn a new language",
+                "Volunteer for a cause you care about",
+                "Start a creative project"
+            ]
+        };
+
+        // DOM Elements
+        const loginScreen = document.getElementById('loginScreen');
+        const appScreen = document.getElementById('appScreen');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const fullNameInput = document.getElementById('fullName');
+        const nameField = document.getElementById('nameField');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const authError = document.getElementById('authError');
+        const authSuccess = document.getElementById('authSuccess');
+        const passwordToggle = document.getElementById('passwordToggle');
+        const passwordRequirements = document.getElementById('passwordRequirements');
+        const toggleMode = document.getElementById('toggleMode');
+     
+        const titleInput = document.getElementById('title');
+        const contentInput = document.getElementById('content');
+        const tagsInput = document.getElementById('tags');
+        const saveBtn = document.getElementById('saveBtn');
+        const entriesList = document.getElementById('entriesList');
+        const moodContentDiv = document.getElementById('moodContent');
+        const energyLevel = document.getElementById('energyLevel');
+        const energyValue = document.getElementById('energyValue');
+        const searchEntries = document.getElementById('searchEntries');
+        const filterMood = document.getElementById('filterMood');
+
+        // AI Elements
+        const aiAnalyzeBtn = document.getElementById('aiAnalyzeBtn');
+        const aiSuggestionsBtn = document.getElementById('aiSuggestionsBtn');
+        const aiInsightsBtn = document.getElementById('aiInsightsBtn');
+        const aiResponse = document.getElementById('aiResponse');
+        const generateReport = document.getElementById('generateReport');
+        const aiReport = document.getElementById('aiReport');
+
+        // Goals Elements
+        const newGoal = document.getElementById('newGoal');
+        const addGoalBtn = document.getElementById('addGoalBtn');
+        const aiGoalSuggestBtn = document.getElementById('aiGoalSuggestBtn');
+        const goalsList = document.getElementById('goalsList');
+
+        // Chat Elements
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendChatBtn = document.getElementById('sendChatBtn');
+
+
+       
+        // Variables
+        let currentUser = null;
+        let selectedMood = null;
+        let selectedMoodName = null;
+        let allEntries = [];
+        let allGoals = [];
+        let currentTab = 'journal';
+
+        // Auth State Observer
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                showApp();
+                loadEntries();
+                loadGoals();
+                updateAnalytics();
+            } else {
+                currentUser = null;
+                showLogin();
+            }
+        });
+
+
+
+        // Password Toggle Functionality
+passwordToggle.addEventListener('click', () => {
+    const passwordField = document.getElementById('password');
+    const toggleButton = document.getElementById('passwordToggle');
+    
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleButton.textContent = '🙈'; // Hide password icon
+    } else {
+        passwordField.type = 'password';
+        toggleButton.textContent = '👁️'; // Show password icon
+    }
+});
+
+
+// Toggle between Login and Register modes
+toggleMode.addEventListener('click', () => {
+    const isLoginMode = loginBtn.style.display !== 'none';
+    const toggleText = document.getElementById('toggleText');
+    
+    if (isLoginMode) {
+        // Switch to Register mode
+        nameField.classList.remove('hidden');
+        loginBtn.style.display = 'none';
+        registerBtn.style.display = 'inline-block';
+        toggleText.textContent = 'Already have an account?';
+        toggleMode.textContent = 'Login here';
+        document.querySelector('.card h1').textContent = '🧠 Create Account';
+    } else {
+        // Switch to Login mode
+        nameField.classList.add('hidden');
+        loginBtn.style.display = 'inline-block';
+        registerBtn.style.display = 'none';
+        toggleText.textContent = "Don't have an account?";
+        toggleMode.textContent = 'Sign up here';
+        document.querySelector('.card h1').textContent = '🧠 MindJournal Pro';
+    }
+    
+    // Clear any error messages
+    hideError();
+});
+
+        // Show/Hide Screens
+        function showLogin() {
+            loginScreen.classList.remove('hidden');
+            appScreen.classList.add('hidden');
+        }
+
+        function showApp() {
+            loginScreen.classList.add('hidden');
+            appScreen.classList.remove('hidden');
+        }
+
+        // Tab Navigation
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.dataset.tab;
+                switchTab(tabName);
+            });
+        });
+
+        function switchTab(tabName) {
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+
+            currentTab = tabName;
+
+            // Load data for specific tabs
+            if (tabName === 'analytics') {
+                updateAnalytics();
+            } else if (tabName === 'goals') {
+                loadGoals();
+            }
+        }
+
+        // Energy Level Display
+        energyLevel.addEventListener('input', (e) => {
+            energyValue.textContent = e.target.value;
+        });
+
+        // Generate mood-based content
+        function generateMoodContent(moodName) {
+            if (!moodName || !moodContent[moodName]) return;
+            
+            const content = moodContent[moodName];
+            const randomQuote = content.quotes[Math.floor(Math.random() * content.quotes.length)];
+            const randomMeme = content.memes[Math.floor(Math.random() * content.memes.length)];
+            const randomActivity = content.activities[Math.floor(Math.random() * content.activities.length)];
+            
+            const moodEmojis = {
+                sad: '😢💙',
+                neutral: '😐⚖️',
+                happy: '😊✨',
+                excited: '🎉🚀',
+                anxious: '😰💭',
+                peaceful: '😌🕊️'
+            };
+            
+            moodContentDiv.innerHTML = `
+                <div class="mood-content ${moodName}">
+                    <div class="mood-emoji">${moodEmojis[moodName]}</div>
+                    <div class="quote">"${randomQuote}"</div>
+                    <div class="meme">💭 ${randomMeme}</div>
+                    <div style="background: rgba(255,255,255,0.3); padding: 10px; border-radius: 10px; margin: 10px 0;">
+                        <strong>💡 Suggested Activity:</strong> ${randomActivity}
+                    </div>
+                    <button class="refresh-btn" onclick="refreshMoodContent('${moodName}')">✨ Get New Content</button>
+                </div>
+            `;
+            moodContentDiv.classList.remove('hidden');
+        }
+
+        // Refresh mood content
+        window.refreshMoodContent = function(moodName) {
+            generateMoodContent(moodName);
+        };
+
+        // AI Functions
+        function showAILoading(element) {
+            element.innerHTML = '<div class="loading">🤖 AI is thinking...</div>';
+            element.classList.remove('hidden');
+        }
+
+        function simulateAIResponse(type, context = null) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    let response = '';
+                    
+                    switch(type) {
+                        case 'mood-analysis':
+                            if (selectedMoodName && aiResponses.moodAnalysis[selectedMoodName]) {
+                                response = aiResponses.moodAnalysis[selectedMoodName];
+                                const userContent = contentInput.value.trim();
+                                if (userContent) {
+                                    response += `\n\nBased on your entry, I can see you're processing some important thoughts. Remember to be kind to yourself during this time.`;
+                                }
+                            } else {
+                                response = "Please select a mood first so I can provide personalized analysis.";
+                            }
+                            break;
+                            
+                        case 'writing-prompts':
+                            const prompts = aiResponses.writingPrompts;
+                            const selectedPrompts = [];
+                            for (let i = 0; i < 3; i++) {
+                                const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+                                if (!selectedPrompts.includes(randomPrompt)) {
+                                    selectedPrompts.push(randomPrompt);
+                                }
+                            }
+                            response = "Here are some writing prompts to spark your reflection:\n\n" + 
+                                      selectedPrompts.map((prompt, index) => `${index + 1}. ${prompt}`).join('\n\n');
+                            break;
+                            
+                        case 'insights':
+                            const insights = aiResponses.insights;
+                            const randomInsight = insights[Math.floor(Math.random() * insights.length)];
+                            response = `🧠 Personal Insight:\n\n${randomInsight}\n\nKeep up the great work on your personal growth journey!`;
+                            break;
+                            
+                        case 'analytics-report':
+                            response = generateAnalyticsReport();
+                            break;
+                            
+                        case 'goal-suggestions':
+                            const suggestions = aiResponses.goalSuggestions;
+                            const selectedSuggestions = [];
+                            for (let i = 0; i < 5; i++) {
+                                const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+                                if (!selectedSuggestions.includes(randomSuggestion)) {
+                                    selectedSuggestions.push(randomSuggestion);
+                                }
+                            }
+                            response = "Here are some personalized goal suggestions based on your journal patterns:\n\n" + 
+                                      selectedSuggestions.map((suggestion, index) => `${index + 1}. ${suggestion}`).join('\n');
+                            break;
+                            
+                        case 'chat':
+                            response = generateChatResponse(context);
+                            break;
+                            
+                        default:
+                            response = "I'm here to help with your personal growth journey!";
+                    }
+                    
+                    resolve(response);
+                }, 1500); // Simulate AI thinking time
+            });
+        }
+
+        function generateAnalyticsReport() {
+            const totalEntries = allEntries.length;
+            const moodCounts = {};
+            let totalEnergy = 0;
+            let energyEntries = 0;
+            
+            allEntries.forEach(entry => {
+                if (entry.moodName) {
+                    moodCounts[entry.moodName] = (moodCounts[entry.moodName] || 0) + 1;
+                }
+                if (entry.energyLevel) {
+                    totalEnergy += parseInt(entry.energyLevel);
+                    energyEntries++;
+                }
+            });
+            
+            const dominantMood = Object.keys(moodCounts).reduce((a, b) => 
+                moodCounts[a] > moodCounts[b] ? a : b, 'neutral');
+            
+            const avgEnergy = energyEntries > 0 ? (totalEnergy / energyEntries).toFixed(1) : 0;
+            
+            let report = `📊 Your Personal Growth Report\n\n`;
+            report += `📝 Total Entries: ${totalEntries}\n`;
+            report += `🎭 Most Common Mood: ${dominantMood}\n`;
+            report += `⚡ Average Energy Level: ${avgEnergy}/10\n\n`;
+            
+            report += `📈 Insights:\n`;
+            if (totalEntries > 0) {
+                report += `• You've been consistent with journaling - great job!\n`;
+                report += `• Your dominant mood suggests ${getDominantMoodInsight(dominantMood)}\n`;
+                report += `• ${getEnergyInsight(avgEnergy)}\n`;
+                report += `• Keep up the excellent work on your self-reflection journey!\n`;
+            } else {
+                report += `• Start journaling regularly to see meaningful insights\n`;
+                report += `• Consistency is key to personal growth\n`;
+            }
+            
+            return report;
+        }
+
+        function getDominantMoodInsight(mood) {
+            const insights = {
+                happy: "you're in a positive phase of life. Continue nurturing what brings you joy!",
+                sad: "you might be processing some challenges. Remember, this is temporary and part of growth.",
+                excited: "you're full of energy and enthusiasm. Channel this into your goals!",
+                neutral: "you're in a balanced state. This is perfect for reflection and planning.",
+                anxious: "you might be dealing with stress. Consider stress-management techniques.",
+                peaceful: "you've found a good balance. This inner peace is valuable for decision-making."
+            };
+            return insights[mood] || "you're on a unique journey of self-discovery.";
+        }
+
+        function getEnergyInsight(avgEnergy) {
+            if (avgEnergy >= 8) return "Your energy levels are consistently high - you're thriving!";
+            if (avgEnergy >= 6) return "Your energy levels are good - keep maintaining healthy habits.";
+            if (avgEnergy >= 4) return "Your energy levels are moderate - consider what might boost them.";
+            return "Your energy levels could use attention - prioritize rest and self-care.";
+        }
+
+        function generateChatResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('mood') || lowerMessage.includes('feeling')) {
+                return "I understand you want to talk about your feelings. Emotions are complex and valid. What specific mood or feeling would you like to explore today?";
+            }
+            
+            if (lowerMessage.includes('goal') || lowerMessage.includes('achieve')) {
+                return "Goals are powerful motivators! What goal are you working towards? I can help you break it down into manageable steps.";
+            }
+            
+            if (lowerMessage.includes('stress') || lowerMessage.includes('anxious') || lowerMessage.includes('worried')) {
+                return "I hear that you're dealing with stress or anxiety. These feelings are normal, but manageable. Try deep breathing: breathe in for 4 counts, hold for 4, exhale for 4. What's causing you the most concern right now?";
+            }
+            
+            if (lowerMessage.includes('happy') || lowerMessage.includes('excited') || lowerMessage.includes('good')) {
+                return "It's wonderful that you're feeling positive! These moments are precious. What's bringing you joy today? How can you extend this feeling?";
+            }
+            
+            if (lowerMessage.includes('sad') || lowerMessage.includes('down') || lowerMessage.includes('depressed')) {
+                return "I'm sorry you're feeling this way. Your feelings are valid, and it's okay to not be okay sometimes. Have you tried any self-care activities today? Sometimes small steps can make a big difference.";
+            }
+            
+            if (lowerMessage.includes('help') || lowerMessage.includes('advice')) {
+                return "I'm here to support you! I can help with mood analysis, goal setting, journaling prompts, or just listen to what's on your mind. What would be most helpful right now?";
+            }
+            
+            if (lowerMessage.includes('journal') || lowerMessage.includes('write')) {
+                return "Journaling is such a powerful tool for self-reflection! It helps process emotions and track personal growth. What would you like to write about today? I can suggest some prompts if you'd like.";
+            }
+            
+            // Default responses
+            const defaultResponses = [
+                "That's interesting. Can you tell me more about how that makes you feel?",
+                "I'm here to listen and support you. What's on your mind today?",
+                "Personal growth is a journey, not a destination. How can I help you on your path?",
+                "Every experience is a learning opportunity. What insights are you gaining?",
+                "Your thoughts and feelings matter. Thank you for sharing with me.",
+                "Self-reflection is a sign of emotional intelligence. Keep exploring your inner world."
+            ];
+            
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        }
+
+        // AI Event Listeners
+        aiAnalyzeBtn.addEventListener('click', async () => {
+            showAILoading(aiResponse);
+            const response = await simulateAIResponse('mood-analysis');
+            aiResponse.innerHTML = `<h4>🧠 Mood Analysis</h4><p>${response.replace(/\n/g, '<br>')}</p>`;
+        });
+
+        aiSuggestionsBtn.addEventListener('click', async () => {
+            showAILoading(aiResponse);
+            const response = await simulateAIResponse('writing-prompts');
+            aiResponse.innerHTML = `<h4>✍️ Writing Prompts</h4><p>${response.replace(/\n/g, '<br>')}</p>`;
+        });
+
+        aiInsightsBtn.addEventListener('click', async () => {
+            showAILoading(aiResponse);
+            const response = await simulateAIResponse('insights');
+            aiResponse.innerHTML = `<h4>💡 Personal Insights</h4><p>${response.replace(/\n/g, '<br>')}</p>`;
+        });
+
+        generateReport.addEventListener('click', async () => {
+            showAILoading(aiReport);
+            const response = await simulateAIResponse('analytics-report');
+            aiReport.innerHTML = `<h4>📊 AI-Generated Report</h4><p>${response.replace(/\n/g, '<br>')}</p>`;
+        });
+
+        aiGoalSuggestBtn.addEventListener('click', async () => {
+            const response = await simulateAIResponse('goal-suggestions');
+            alert(response);
+        });
+
+        // Chat functionality
+        sendChatBtn.addEventListener('click', sendChatMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        });
+
+        async function sendChatMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            addChatMessage(message, 'user');
+            chatInput.value = '';
+            
+            // Add loading message
+            const loadingId = addChatMessage('🤖 Thinking...', 'ai', true);
+            
+            // Get AI response
+            const response = await simulateAIResponse('chat', message);
+            
+            // Replace loading message with actual response
+            document.getElementById(loadingId).remove();
+            addChatMessage(response, 'ai');
+        }
+
+        function addChatMessage(message, sender, isLoading = false) {
+            const messageDiv = document.createElement('div');
+            const messageId = isLoading ? `loading-${Date.now()}` : '';
+            if (messageId) messageDiv.id = messageId;
+            
+            messageDiv.style.cssText = `
+                margin: 10px 0;
+                padding: 10px 15px;
+                border-radius: 15px;
+                max-width: 80%;
+                ${sender === 'user' 
+                    ? 'background: var(--secondary-gradient); color: white; margin-left: auto; text-align: right;' 
+                    : 'background: rgba(255,255,255,0.3); color: var(--text-primary);'
+                }
+            `;
+            
+            messageDiv.innerHTML = sender === 'user' 
+                ? `<strong>You:</strong> ${message}`
+                : `<strong>🤖 AI Companion:</strong> ${message}`;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return messageId;
+        }
+
+        // Goals functionality
+        addGoalBtn.addEventListener('click', async () => {
+            const goalText = newGoal.value.trim();
+            if (!goalText) return;
+            
+            try {
+                await addDoc(collection(db, `users/${currentUser.uid}/goals`), {
+                    text: goalText,
+                    completed: false,
+                    createdAt: Timestamp.now()
+                });
+                
+                newGoal.value = '';
+                loadGoals();
+            } catch (error) {
+                console.error('Error adding goal:', error);
+            }
+        });
+
+        async function loadGoals() {
+            try {
+                const q = query(
+                    collection(db, `users/${currentUser.uid}/goals`),
+                    orderBy('createdAt', 'desc')
+                );
+                const snapshot = await getDocs(q);
+                
+                allGoals = [];
+                goalsList.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    goalsList.innerHTML = '<p>No goals yet. Set your first goal!</p>';
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const goal = { id: doc.id, ...doc.data() };
+                    allGoals.push(goal);
+                    
+                    const goalDiv = document.createElement('div');
+                    goalDiv.className = `goal-item ${goal.completed ? 'goal-completed' : ''}`;
+                    goalDiv.innerHTML = `
+                        <span>${goal.text}</span>
+                        <div>
+                            <button onclick="toggleGoal('${doc.id}', ${!goal.completed})" class="btn" style="padding: 5px 10px; margin: 0 5px;">
+                                ${goal.completed ? '↩️ Undo' : '✅ Complete'}
+                            </button>
+                            <button onclick="deleteGoal('${doc.id}')" class="btn" style="background: red; padding: 5px 10px;">🗑️</button>
+                        </div>
+                    `;
+                    goalsList.appendChild(goalDiv);
+                });
+            } catch (error) {
+                console.error('Load goals error:', error);
+            }
+        }
+
+        window.toggleGoal = async (goalId, completed) => {
+            try {
+                await updateDoc(doc(db, `users/${currentUser.uid}/goals`, goalId), {
+                    completed: completed
+                });
+                loadGoals();
+            } catch (error) {
+                console.error('Toggle goal error:', error);
+            }
+        };
+
+        window.deleteGoal = async (goalId) => {
+            if (confirm('Are you sure you want to delete this goal?')) {
+                try {
+                    await deleteDoc(doc(db, `users/${currentUser.uid}/goals`, goalId));
+                    loadGoals();
+                } catch (error) {
+                    console.error('Delete goal error:', error);
+                }
+            }
+        };
+
+        // Register
+        registerBtn.addEventListener('click', async () => {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            if (!email || !password) {
+                showError('Please fill all fields');
+                return;
+            }
+
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                hideError();
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+
+        // Login
+        loginBtn.addEventListener('click', async () => {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            if (!email || !password) {
+                showError('Please fill all fields');
+                return;
+            }
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                hideError();
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+
+        // Mood Selection
+        document.querySelectorAll('.mood-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedMood = btn.dataset.mood;
+                selectedMoodName = btn.dataset.name;
+                
+                // Generate mood-based content
+                generateMoodContent(selectedMoodName);
+            });
+        });
+
+        // Save Entry
+        saveBtn.addEventListener('click', async () => {
+            const title = titleInput.value.trim();
+            const content = contentInput.value.trim();
+            const tags = tagsInput.value.trim().split(',').map(tag => tag.trim()).filter(tag => tag);
+            const energy = parseInt(energyLevel.value);
+
+            if (!title || !content || !selectedMood) {
+                alert('Please fill all fields and select a mood');
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, `users/${currentUser.uid}/entries`), {
+                    title,
+                    content,
+                    mood: selectedMood,
+                    moodName: selectedMoodName,
+                    energyLevel: energy,
+                    tags,
+                    createdAt: Timestamp.now()
+                });
+
+                // Clear form
+                titleInput.value = '';
+                contentInput.value = '';
+                tagsInput.value = '';
+                energyLevel.value = 5;
+                energyValue.textContent = '5';
+                document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+                selectedMood = null;
+                selectedMoodName = null;
+                moodContentDiv.classList.add('hidden');
+                aiResponse.classList.add('hidden');
+
+                loadEntries();
+                updateAnalytics();
+                alert('Entry saved successfully!');
+            } catch (error) {
+                console.error('Save error:', error);
+                alert('Error saving entry');
+            }
+        });
+
+        // Search and Filter
+        searchEntries.addEventListener('input', filterEntries);
+        filterMood.addEventListener('change', filterEntries);
+
+        function filterEntries() {
+            const searchTerm = searchEntries.value.toLowerCase();
+            const moodFilter = filterMood.value;
+            
+            const filteredEntries = allEntries.filter(entry => {
+                const matchesSearch = !searchTerm || 
+                    entry.title.toLowerCase().includes(searchTerm) ||
+                    entry.content.toLowerCase().includes(searchTerm) ||
+                    entry.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+                
+                const matchesMood = !moodFilter || entry.moodName === moodFilter;
+                
+                return matchesSearch && matchesMood;
+            });
+            
+            displayEntries(filteredEntries);
+        }
+
+        function displayEntries(entries) {
+            entriesList.innerHTML = '';
+            
+            if (entries.length === 0) {
+                entriesList.innerHTML = '<p>No entries found matching your criteria.</p>';
+                return;
+            }
+
+            entries.forEach(entry => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'entry';
+                entryDiv.innerHTML = `
+                    <h3>${entry.title} ${entry.mood} (Energy: ${entry.energyLevel || 'N/A'}/10)</h3>
+                    <p>${entry.content}</p>
+                    <small>Created: ${entry.createdAt.toDate().toLocaleDateString()}</small>
+                    ${entry.tags.length ? `<p><strong>Tags:</strong> ${entry.tags.join(', ')}</p>` : ''}
+                    <button onclick="deleteEntry('${entry.id}')" class="btn" style="background: red; margin-top: 10px;">Delete</button>
+                `;
+                entriesList.appendChild(entryDiv);
+            });
+        }
+
+        // Load Entries
+        async function loadEntries() {
+            try {
+                const q = query(
+                    collection(db, `users/${currentUser.uid}/entries`),
+                    orderBy('createdAt', 'desc')
+                );
+                const snapshot = await getDocs(q);
+                
+                allEntries = [];
+                
+                if (snapshot.empty) {
+                    entriesList.innerHTML = '<p>No entries yet. Create your first entry!</p>';
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const entry = { id: doc.id, ...doc.data() };
+                    allEntries.push(entry);
+                });
+                
+                displayEntries(allEntries);
+            } catch (error) {
+                console.error('Load entries error:', error);
+            }
+        }
+
+        // Update Analytics
+        function updateAnalytics() {
+            const totalEntries = allEntries.length;
+            document.getElementById('totalEntries').textContent = totalEntries;
+            
+            // Calculate streak (simplified)
+            let streak = 0;
+            if (allEntries.length > 0) {
+                const today = new Date();
+                const lastEntry = allEntries[0].createdAt.toDate();
+                const diffTime = Math.abs(today - lastEntry);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                streak = diffDays <= 1 ? Math.min(7, totalEntries) : 0; // Simplified streak calculation
+            }
+            document.getElementById('currentStreak').textContent = streak;
+            
+            // Calculate average mood (simplified scoring)
+            const moodScores = { sad: 2, anxious: 3, neutral: 5, peaceful: 7, happy: 8, excited: 10 };
+            let totalMoodScore = 0;
+            let moodCount = 0;
+            
+            allEntries.forEach(entry => {
+                if (entry.moodName && moodScores[entry.moodName]) {
+                    totalMoodScore += moodScores[entry.moodName];
+                    moodCount++;
+                }
+            });
+            
+            const avgMood = moodCount > 0 ? (totalMoodScore / moodCount).toFixed(1) : 0;
+            document.getElementById('avgMood').textContent = avgMood;
+            
+            // Calculate average energy
+            let totalEnergy = 0;
+            let energyCount = 0;
+            
+            allEntries.forEach(entry => {
+                if (entry.energyLevel) {
+                    totalEnergy += entry.energyLevel;
+                    energyCount++;
+                }
+            });
+            
+            const avgEnergy = energyCount > 0 ? (totalEnergy / energyCount).toFixed(1) : 0;
+            document.getElementById('avgEnergy').textContent = avgEnergy;
+            
+            // Update mood trend data
+            updateMoodTrend();
+        }
+
+        function updateMoodTrend() {
+            const last7Days = allEntries.slice(0, 7);
+            const trendData = last7Days.map(entry => ({
+                date: entry.createdAt.toDate().toLocaleDateString(),
+                mood: entry.moodName,
+                energy: entry.energyLevel || 5
+            }));
+            
+            const trendDiv = document.getElementById('moodTrendData');
+            if (trendData.length > 0) {
+                trendDiv.innerHTML = `
+                    <h4>📈 Last 7 Entries Trend</h4>
+                    ${trendData.map(day => `
+                        <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.2);">
+                            <span>${day.date}</span>
+                            <span>${day.mood} (Energy: ${day.energy}/10)</span>
+                        </div>
+                    `).join('')}
+                `;
+            } else {
+                trendDiv.innerHTML = '<p>Start journaling to see your mood trends!</p>';
+            }
+        }
+
+        // Delete Entry
+        window.deleteEntry = async (entryId) => {
+            if (confirm('Are you sure you want to delete this entry?')) {
+                try {
+                    await deleteDoc(doc(db, `users/${currentUser.uid}/entries`, entryId));
+                    loadEntries();
+                    updateAnalytics();
+                    alert('Entry deleted successfully!');
+                } catch (error) {
+                    console.error('Delete error:', error);
+                    alert('Error deleting entry');
+                }
+            }
+        };
+
+        // Helper Functions
+        function showError(message) {
+            authError.textContent = message;
+            authError.classList.remove('hidden');
+        }
+
+        function hideError() {
+            authError.classList.add('hidden');
+        }
+
+        // Initialize welcome message
+        function updateWelcomeMessage() {
+            const messages = [
+                "Ready to reflect and grow? 🌱",
+                "What's on your mind today? 💭",
+                "Your journey of self-discovery continues! ✨",
+                "Time for some mindful reflection 🧘‍♀️",
+                "Let's explore your thoughts together 🚀"
+            ];
+            const welcomeMsg = document.getElementById('welcomeMessage');
+            if (welcomeMsg) {
+                welcomeMsg.textContent = messages[Math.floor(Math.random() * messages.length)];
+            }
+        }
+
+        // Update welcome message periodically
+        setInterval(updateWelcomeMessage, 30000); // Every 30 seconds
+    </script>
+</body>
+</html>

@@ -43,6 +43,9 @@ A modern web application for mental health tracking, daily reflection, and perso
 - **Beautiful UI**: Modern glassmorphism design with smooth animations
 - **Cross-Platform**: Works on desktop, tablet, and mobile
 
+live link:https://journ-956f2.web.app
+
+
 ⭐ **Star this repo if you find it helpful!** ⭐
 
 *Made with ❤️ for mental health and personal growth*
